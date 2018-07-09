@@ -27,8 +27,7 @@ namespace test_06
 
         private static string StringAligner(string[] subStrings, int strWidth)
         {
-            if (subStrings.Length == 0)
-                return null;
+            if (subStrings.Length == 0) return null;
 
             int cnSpace = strWidth - SumLenOfStr(subStrings);
             int addSpace = 0;
@@ -133,23 +132,41 @@ namespace test_06
                 strWidth = int.Parse(fsrc.ReadLine());
             }
         }
+
+        public CMyInput(StreamReader stream)
+        {
+            src = stream.ReadLine();
+            strWidth = int.Parse(stream.ReadLine());
+        }
     }
 
     public class CMyOutput
     {
-        public CMyOutput(string dst)
+        public string dst;
+
+        public CMyOutput(string _dst)
+        {
+            dst = _dst;
+        }
+
+        public void Print()
         {
             Console.WriteLine("Edited text:");
 
             Console.Write(dst);
         }
 
-        public CMyOutput(string filename, string dst)
+        public void Print(string filename)
         {
             using (StreamWriter fdst = new StreamWriter(filename))
             {
                 fdst.Write(dst);
             }
+        }
+
+        public void Print(StreamWriter stream)
+        {
+            stream.Write(dst);
         }
     }
 
@@ -159,9 +176,11 @@ namespace test_06
         {
             CMyInput inp1 = new CMyInput();
             CMyOutput out1 = new CMyOutput(CTextEditor.TextAligner(inp1.src, inp1.strWidth));
+            out1.Print();
 
             CMyInput inp2 = new CMyInput("testInp.txt");
-            CMyOutput out2 = new CMyOutput("testOut.txt", CTextEditor.TextAligner(inp2.src, inp2.strWidth));
+            CMyOutput out2 = new CMyOutput(CTextEditor.TextAligner(inp2.src, inp2.strWidth));
+            out2.Print("testOut.txt");
 
             Console.ReadKey();
         }
